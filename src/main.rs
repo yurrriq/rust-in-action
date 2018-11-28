@@ -1,12 +1,10 @@
 fn main() {
-    let a      = 10;
-    let b: i32 = 20;
+    let three         = 0b11;
+    let thirty        = 0o36;
+    let three_hundred = 0x12c;
 
-    let c = add(a, b);
-    println!("a + b = {}", c);
-}
-
-
-fn add(i: i32, j: i32) -> i32 {
-    return i + j;
+    println!("{} {} {}", three, thirty, three_hundred);
+    println!("{:b} {:b} {:b}", three, thirty, three_hundred);
+    println!("{:o} {:o} {:o}", three, thirty, three_hundred);
+    println!("{:x} {:x} {:x}", three, thirty, three_hundred);
 }
