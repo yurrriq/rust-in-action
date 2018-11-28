@@ -1,15 +1,18 @@
+use std::ops::{Add};
+
+
+fn add<T: Add<Output = T>>(i: T, j: T) -> T {
+    return i + j;
+}
+
+
 fn main() {
-    let haystack = [1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862];
+    let (a, b) = (1.2, 3.4);
+    let (x, y) = (10, 20);
 
-    for reference in haystack.iter() {
-        let item = *reference;
-        let result = match item {
-            42 | 132 => "hit!",
-            _        => "miss"
-        };
+    let c = add(a, b);
+    let z = add(x, y);
 
-        if result == "hit!" {
-            println!("{}: {}", item, result);
-        }
-    }
+    println!("{} + {} = {}", a, b, c);
+    println!("{} + {} = {}", x, y, z);
 }
