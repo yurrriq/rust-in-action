@@ -1,6 +1,6 @@
 [package]
-name = "rust-in-action"
-version = "0.2.22"
+name = "grep-lite"
+version = "0.1.0"
 authors = ["Eric Bailey <eric@ericb.me>"]
 
 [dependencies]
