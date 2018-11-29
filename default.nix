@@ -7,13 +7,13 @@ with import ./nix/lib.nix;
 with import nixpkgs {
   overlays = [
     (import mozillaOverlay)
-    (import ./nix/rust-nightly.nix)
+    (import ./nix/rust-pinned.nix)
   ];
 };
 
 {
 
-  drv = (callPackage ./Cargo.nix { }).hello {};
+  drv = (callPackage ./Cargo.nix { }).rust_in_action {};
 
   env = stdenv.mkDerivation {
     name = "rust-in-action-env";

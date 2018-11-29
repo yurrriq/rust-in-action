@@ -1,7 +1,6 @@
 [package]
-name = "hello"
-edition = "2018"
-version = "0.1.0"
+name = "rust-in-action"
+version = "0.2.14"
 authors = ["Eric Bailey <eric@ericb.me>"]
 
 [dependencies]

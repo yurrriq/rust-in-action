@@ -1,4 +1,4 @@
 [[package]]
-name = "hello"
-version = "0.1.0"
+name = "rust-in-action"
+version = "0.2.14"
 
