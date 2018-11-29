@@ -10,3 +10,6 @@ Cargo.lock: Cargo.toml
 
 Cargo.nix: Cargo.lock
 	nix-shell --pure -p carnix --run 'carnix nix --src ./.'
+
+README.md: $(wildcard src/bin/*.org)
+	@ pandoc -f org -t gfm -o $@ $^
