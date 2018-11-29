@@ -3,7 +3,7 @@
   :header-args: :tangle ch2-traversing-arrays.rs :padline no
   :END:
 
-#+BEGIN_SRC rust
+#+BEGIN_SRC rust :export none
 fn main() {
 #+END_SRC
 
@@ -31,7 +31,7 @@ Explicitly declare the type of a /repeat/ expression.
 #+END_SRC
 
 ** Traverse ~arrays~
-#+BEGIN_SRC rust :padline yes
+#+BEGIN_SRC rust :padline yes :export none
     let arrays = [one, two, blank1, blank2];
 #+END_SRC
 
@@ -63,7 +63,7 @@ needing to call ~iter()~.
         println!("");
 #+END_SRC
 
-#+BEGIN_SRC rust
+#+BEGIN_SRC rust :export none
     }
 }
 #+END_SRC
