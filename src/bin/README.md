@@ -1,9 +1,5 @@
 # Traversing Arrays
 
-``` rust
-fn main() {
-```
-
 ## Define some arrays
 
 Define `one` using an *array literal*. Rust infers its type, probably
@@ -33,10 +29,6 @@ let blank2: [u8; 3] = [0; 3];
 
 ## Traverse `arrays`
 
-``` rust
-let arrays = [one, two, blank1, blank2];
-```
-
 Taking a reference to an array returns a slice, which supports iteration
 without needing to call `iter()`.
 
@@ -64,9 +56,4 @@ for idx in 0..array.len() {
 ``` rust
 print!("\t(Σ{:?} = {})", array, sum);
 println!("");
-```
-
-``` rust
-    }
-}
 ```
