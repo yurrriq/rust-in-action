@@ -18,17 +18,17 @@ let kernel = buildPlatform.parsed.kernel.name;
     ) [] (builtins.attrNames feat);
 in
 rec {
-  rust_in_action = f: rust_in_action_0_2_14 { features = rust_in_action_0_2_14_features { rust_in_action_0_2_14 = f; }; };
+  rust_in_action = f: rust_in_action_0_2_16 { features = rust_in_action_0_2_16_features { rust_in_action_0_2_16 = f; }; };
   __all = [ (rust_in_action {}) ];
-  rust_in_action_0_2_14_ = { dependencies?[], buildDependencies?[], features?[] }: buildRustCrate {
+  rust_in_action_0_2_16_ = { dependencies?[], buildDependencies?[], features?[] }: buildRustCrate {
     crateName = "rust-in-action";
-    version = "0.2.14";
+    version = "0.2.16";
     authors = [ "Eric Bailey <eric@ericb.me>" ];
     src = ./.;
     inherit dependencies buildDependencies features;
   };
-  rust_in_action_0_2_14 = { features?(rust_in_action_0_2_14_features {}) }: rust_in_action_0_2_14_ {};
-  rust_in_action_0_2_14_features = f: updateFeatures f (rec {
-    rust_in_action_0_2_14.default = (f.rust_in_action_0_2_14.default or true);
+  rust_in_action_0_2_16 = { features?(rust_in_action_0_2_16_features {}) }: rust_in_action_0_2_16_ {};
+  rust_in_action_0_2_16_features = f: updateFeatures f (rec {
+    rust_in_action_0_2_16.default = (f.rust_in_action_0_2_16.default or true);
   }) [];
 }
