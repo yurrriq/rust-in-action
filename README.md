@@ -8,8 +8,10 @@ Define the parameters.
     let context_lines = 2;
     let needle = "oo";
     let haystack = "Every face, every shop,
-bedroom window, public-house, and dark square is a picture
-feverishly turned--in search of what? It is the same with books.
+bedroom window, public-house, and
+dark square is a picture
+feverishly turned--in search of what?
+It is the same with books.
 What do we seek
 through millions of pages?";
 ```
@@ -128,4 +130,33 @@ for idx in 0..array.len() {
 ``` rust
 print!("\t(Σ{:?} = {})", array, sum);
 println!("");
+```
+
+# Searching for chspatterns with regular expressions
+
+Look outside the standard library for the `regex` crate.
+
+``` rust
+extern crate regex;
+```
+
+``` rust
+use regex::Regex;
+```
+
+``` rust
+fn main() {
+    let re = Regex::new("picture").unwrap(); // NOTE: unwrap() is unsafe
+
+    let quote = "Every face, every shop, bedroom window, public-house, and
+dark square is a picture feverishly turned--in search of what?
+It is the same with books. What do we seek through millions of pages?";
+
+    for line in quote.lines() {
+    match re.find(line) {
+        Some(_) => println!("{}", line),
+        None    => (),
+    }
+    }
+}
 ```

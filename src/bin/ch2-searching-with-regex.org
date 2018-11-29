@@ -1,0 +1,30 @@
+* Searching for chspatterns with regular expressions
+  :PROPERTIES:
+  :header-args: :tangle ch2-searching-with-regex.rs :padline no
+  :END:
+
+Look outside the standard library for the =regex= crate.
+#+BEGIN_SRC rust
+extern crate regex;
+#+END_SRC
+
+#+BEGIN_SRC rust
+use regex::Regex;
+#+END_SRC
+
+#+BEGIN_SRC rust
+fn main() {
+    let re = Regex::new("picture").unwrap(); // NOTE: unwrap() is unsafe
+
+    let quote = "Every face, every shop, bedroom window, public-house, and
+dark square is a picture feverishly turned--in search of what?
+It is the same with books. What do we seek through millions of pages?";
+
+    for line in quote.lines() {
+	match re.find(line) {
+	    Some(_) => println!("{}", line),
+	    None    => (),
+	}
+    }
+}
+#+END_SRC
