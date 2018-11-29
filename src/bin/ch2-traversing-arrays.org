@@ -1,0 +1,69 @@
+* Traversing Arrays
+  :PROPERTIES:
+  :header-args: :tangle ch2-traversing-arrays.rs :padline no
+  :END:
+
+#+BEGIN_SRC rust
+fn main() {
+#+END_SRC
+
+** Define some arrays
+
+Define ~one~ using an /array literal/.
+Rust infers its type, probably ~[i32; 3]~.
+#+BEGIN_SRC rust
+    let one             = [1, 2, 3];
+#+END_SRC
+
+Explicitly declare ~two~ to be an array of ~3~ elements of ~u8~.s
+#+BEGIN_SRC rust
+    let two: [u8; 3]    = [1, 2, 3];
+#+END_SRC
+
+Repeat ~0~ ~3~ times.
+#+BEGIN_SRC rust
+    let blank1          = [0; 3];
+#+END_SRC
+
+Explicitly declare the type of a /repeat/ expression.
+#+BEGIN_SRC rust
+    let blank2: [u8; 3] = [0; 3];
+#+END_SRC
+
+** Traverse ~arrays~
+#+BEGIN_SRC rust :padline yes
+    let arrays = [one, two, blank1, blank2];
+#+END_SRC
+
+Taking a reference to an array returns a slice, which supports iteration without
+needing to call ~iter()~.
+#+BEGIN_SRC rust :padline yes
+    for array in &arrays {
+#+END_SRC
+
+#+BEGIN_SRC rust
+        print!("{:?}: ", array);
+#+END_SRC
+
+#+BEGIN_SRC rust
+        for num in array.iter() {
+            print!("\t{} + 10 = {}", num, num + 10);
+        }
+#+END_SRC
+
+#+BEGIN_SRC rust :padline yes
+        let mut sum = 0;
+        for idx in 0..array.len() {
+            sum += array[idx]; // bounds checked
+        }
+#+END_SRC
+
+#+BEGIN_SRC rust
+        print!("\t(Σ{:?} = {})", array, sum);
+        println!("");
+#+END_SRC
+
+#+BEGIN_SRC rust
+    }
+}
+#+END_SRC

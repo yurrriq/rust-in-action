@@ -1,6 +1,4 @@
 [package]
 name = "rust-in-action"
-version = "0.2.14"
+version = "0.2.15"
 authors = ["Eric Bailey <eric@ericb.me>"]
-
-[dependencies]
