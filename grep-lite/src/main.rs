@@ -8,14 +8,22 @@ use std::fs::File;
 use std::io;
 use std::io::BufReader;
 use std::io::prelude::*;
+use std::process;
 
 
 fn process_lines<T: BufRead + Sized>(reader: T, re: Regex) {
     for line_ in reader.lines() {
-        let line = line_.unwrap();
-        match re.find(&line) {
-            Some(_) => println!("{}", line),
-            None    => (),
+        match line_ {
+            Ok(line) => {
+                match re.find(&line) {
+                    Some(_) => println!("{}", line),
+                    None    => (),
+                }
+            },
+            Err(_) => {
+                println!("Shit!");
+                process::exit(100)
+            },
         }
     }
 }
