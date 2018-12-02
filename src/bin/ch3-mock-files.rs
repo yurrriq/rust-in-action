@@ -5,10 +5,17 @@ fn one_in(n: u32) -> bool {
     rand::thread_rng().gen_bool(1.0/(n as f64))
 }
 
+#[derive(Debug,PartialEq)]
+enum FileState {
+    Open,
+    Closed,
+}
+
 #[derive(Debug)]
 struct File {
     name: String,
     data: Vec<u8>,
+    state: FileState,
 }
 
 impl File {
@@ -16,6 +23,7 @@ impl File {
         File {
             name: String::from(name),
             data: Vec::new(),
+            state: FileState::Closed,
         }
     }
 
@@ -26,6 +34,9 @@ impl File {
     }
 
     fn read(self: &File, save_to: &mut Vec<u8>) -> Result<usize, String> {
+        if self.state != FileState::Open {
+            return Err(String::from("File must be open for reading"));
+        }
         let mut tmp         = self.data.clone();
         let     read_length = tmp.len();
         save_to.reserve(read_length);
@@ -34,22 +45,24 @@ impl File {
     }
 }
 
-fn open(f: File) -> Result<File, String> {
+fn open(mut f: File) -> Result<File, String> {
     if one_in(10_000) {
         let err_msg = String::from("Permission denied");
         return Err(err_msg);
+    } else {
+        f.state = FileState::Open;
+        return Ok(f);
     }
-    
-    Ok(f)
 }
 
-fn close(f: File) -> Result<File, String> {
+fn close(mut f: File) -> Result<File, String> {
     if one_in(100_000) {
         let err_msg = String::from("Interrupted by signal!");
         return Err(err_msg);
+    } else {
+        f.state = FileState::Closed;
+        return Ok(f);
     }
-    
-    Ok(f)
 }
 
 fn main() {
