@@ -190,7 +190,7 @@ dependencies = [
 
 [[package]]
 name = "rust-in-action"
-version = "0.3.12"
+version = "0.3.17"
 dependencies = [
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
