@@ -163,75 +163,148 @@ It is the same with books. What do we seek through millions of pages?";
 
 # Modeling Files
 
-Prevent compliler warnings about unused variables.
-
 ``` rust
-#![allow(unused_variables)]
+//! Simulate files, one step at a time.
 ```
 
 ``` rust
-#[derive(Debug)]
+#![allow(dead_code)]
 ```
 
 ``` rust
-struct File {
-    name: String,
-    data: Vec<u8>,
+extern crate rand;
+
+use rand::Rng;
+use std::fmt;
+use std::fmt::{Display};
+```
+
+``` rust
+fn one_in(n: u32) -> bool {
+    rand::thread_rng().gen_bool(1.0/(n as f64))
 }
 ```
 
 ``` rust
+#[derive(Debug,PartialEq)]
+pub enum FileState {
+    Open,
+    Closed,
+}
+
+impl Display for FileState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            FileState::Open   => write!(f, "OPEN"),
+            FileState::Closed => write!(f, "CLOSED"),
+        }
+    }
+}
+```
+
+``` rust
+/// Represent a "file", which probably lives on a file system.
+#[derive(Debug)]
+pub struct File {
+    name: String,
+    data: Vec<u8>,
+    state: FileState,
+}
+
+impl Display for File {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "<{} ({})>", self.name, self.state)
+    }
+}
+```
+
+```` rust
 impl File {
-    fn new(name: &str) -> File {
+    /// Create a new, empty `File`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let f = File::new("f1.txt");
+    /// ```
+    pub fn new(name: &str) -> File {
         File {
             name: String::from(name),
             data: Vec::new(),
+            state: FileState::Closed,
         }
     }
 
-    fn new_with_data(name: &str, data: &Vec<u8>) -> File {
+    /// Create a new `File` with given `name` and `data`.
+    pub fn new_with_data(name: &str, data: &Vec<u8>) -> File {
         let mut f = File::new(name);
         f.data = data.clone();
         f
     }
 
-    fn read(self: &File, save_to: &mut Vec<u8>) -> usize {
+    /// Return the file's length in bytes.
+    pub fn len(&self) -> usize {
+        self.data.len()
+    }
+
+    /// Return the file's name.
+    pub fn name(&self) -> String {
+        self.name.clone()
+    }
+}
+````
+
+``` rust
+trait Read {
+    fn read(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String>;
+}
+```
+
+``` rust
+impl Read for File {
+    fn read(self: &File, save_to: &mut Vec<u8>) -> Result<usize, String> {
+        if self.state != FileState::Open {
+            return Err(String::from("File must be open for reading"));
+        }
         let mut tmp         = self.data.clone();
         let     read_length = tmp.len();
         save_to.reserve(read_length);
         save_to.append(&mut tmp);
-        read_length
+        Ok(read_length)
     }
 }
 ```
 
 ``` rust
-fn open(f: &mut File) -> bool {
-    true
+fn open(mut f: File) -> Result<File, String> {
+    if one_in(10_000) {
+        let err_msg = String::from("Permission denied");
+        return Err(err_msg);
+    } else {
+        f.state = FileState::Open;
+        return Ok(f);
+    }
 }
 ```
 
 ``` rust
-fn close(f: &mut File) -> bool {
-    true
+fn close(mut f: File) -> Result<File, String> {
+    if one_in(100_000) {
+        let err_msg = String::from("Interrupted by signal!");
+        return Err(err_msg);
+    } else {
+        f.state = FileState::Closed;
+        return Ok(f);
+    }
 }
 ```
 
 ``` rust
 fn main() {
-    let f3_data: Vec<u8> = vec![114, 117, 115, 116, 33];
-    let mut f3 = File::new_with_data("2.txt", &f3_data);
+    let f6_data: Vec<u8> = vec![114, 117, 115, 116, 33];
+    let f6 = File::new_with_data("6.txt", &f6_data);
 
-    let mut buffer: Vec<u8> = vec![];
-
-    open(&mut f3);
-    let f3_length = f3.read(&mut buffer);
-    close(&mut f3);
-
-    let text = String::from_utf8_lossy(&buffer);
-
-    println!("{:?}", f3);
-    println!("{} is {} bytes long", &f3.name, f3_length);
-    println!("{}", text);
+    println!("{:?}", f6);
+    println!("{}", f6);
 }
 ```
