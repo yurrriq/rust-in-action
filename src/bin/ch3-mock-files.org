@@ -1,0 +1,54 @@
+* Modeling Files
+  :PROPERTIES:
+  :header-args: :tangle ch3-mock-files.rs
+  :END:
+
+Prevent compiler warnings about unused variables.
+#+BEGIN_SRC rust
+#![allow(unused_variables)]
+#+END_SRC
+
+Create a type alias.
+#+BEGIN_SRC rust :padline yes
+type File = String;
+#+END_SRC
+
+#+BEGIN_SRC rust :padline yes
+fn open(f: &mut File) -> bool {
+    true
+}
+#+END_SRC
+
+#+BEGIN_SRC rust :padline yes
+fn close(f: &mut File) -> bool {
+    true
+}
+#+END_SRC
+
+Prevent compiler warnings about unused code.
+#+BEGIN_SRC rust :padline yes
+#[allow(dead_code)]
+#+END_SRC
+
+The return type ~!~ indicates to the compiler that this function never returns.
+#+BEGIN_SRC rust
+fn read(f: &mut File, save_to: &mut Vec<u8>) -> ! {
+#+END_SRC
+
+This macro will crash the program if encountered.
+#+BEGIN_SRC rust
+    unimplemented!()
+#+END_SRC
+
+#+BEGIN_SRC rust
+}
+#+END_SRC
+
+#+BEGIN_SRC rust :padline yes
+fn main() {
+    let mut f1 = File::from("f1.txt");
+    open(&mut f1);
+    // read(f1, vec![]);
+    close(&mut f1);
+}
+#+END_SRC
