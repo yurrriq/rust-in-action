@@ -1,0 +1,158 @@
+* Checking CubeSat Status
+
+#+NAME: enum-status-message
+#+BEGIN_SRC rust
+#[derive(Copy,Clone,Debug)]
+enum StatusMessage {
+    Ok,
+}
+#+END_SRC
+
+** Ownership
+   :PROPERTIES:
+   :header-args: :noweb yes :tangle ch4-check-sat.rs
+   :END:
+
+#+BEGIN_SRC rust
+#[derive(Debug)]
+struct CubeSat {
+    id: u64,
+}
+#+END_SRC
+
+#+BEGIN_SRC rust
+<<enum-status-message>>
+#+END_SRC
+
+#+BEGIN_SRC rust
+fn check_status(sat: CubeSat) -> CubeSat {
+    println!("{:?}: {:?}", sat, StatusMessage::Ok);
+    sat
+}
+#+END_SRC
+
+When ~check_status~ is called, ownership is moved to the local variable
+~sat_id~. Then the new ~let~ binding is "reset".
+#+BEGIN_SRC rust
+fn main() {
+    let sat_a = CubeSat { id: 42 };
+
+    let sat_a = check_status(sat_a);
+
+    // "waiting" ...
+    let sat_a = check_status(sat_a);
+}
+#+END_SRC
+
+** Ground Control to CubeSat
+  :PROPERTIES:
+  :header-args: :tangle ch4-sat-mailbox.rs
+  :END:
+
+#+BEGIN_SRC rust
+#[derive(Debug)]
+pub struct Mailbox {
+    messages: Vec<Message>,
+}
+
+#[derive(Debug)]
+pub struct Message {
+    to: u64,
+    content: String,
+}
+
+impl Mailbox {
+    pub fn new() -> Mailbox {
+        Mailbox {
+            messages: vec![],
+        }
+    }
+
+    pub fn post(&mut self, msg: Message) {
+        self.messages.push(msg);
+    }
+
+    pub fn deliver(&mut self, recipient: &CubeSat) -> Option<Message> {
+        for i in 0..self.messages.len() {
+            if self.messages[i].to == recipient.id {
+                let msg = self.messages.remove(i);
+                return Some(msg);
+            }
+        }
+
+        None
+    }
+
+    pub fn clear(&mut self) {
+        self.messages.clear();
+    }
+}
+#+END_SRC
+
+#+BEGIN_SRC rust
+pub struct GroundStation {
+    mailbox: Mailbox,
+    satellites: Vec<CubeSat>,
+}
+#+END_SRC
+
+Using a read-only reference to ~self~, taking a mutable borrow of the ~CubeSat~
+instance ~to~, and taking full ownership of the ~Message~ instance ~msg~,
+transfer ownership of ~msg~ into ~messages.push()~, and return the mutated ~to~.
+#+BEGIN_SRC rust
+impl GroundStation {
+    pub fn new() -> GroundStation {
+        GroundStation {
+            mailbox: Mailbox::new(),
+            satellites: vec![],
+        }
+    }
+
+    pub fn connect(&mut self, sat_id: u64) -> CubeSat {
+        let sat = CubeSat {
+            id: sat_id,
+        };
+        self.satellites.push(sat);
+        sat
+    }
+
+    pub fn disconnect(&mut self) {
+        self.mailbox.clear()
+    }
+
+    pub fn send(&mut self, msg: Message) {
+        self.mailbox.post(msg);
+    }
+}
+#+END_SRC
+
+#+BEGIN_SRC rust
+#[derive(Copy,Clone,Debug)]
+pub struct CubeSat {
+    id: u64,
+}
+
+impl CubeSat {
+    pub fn recv(&self, mailbox: &mut Mailbox) -> Option<Message> {
+        mailbox.deliver(&self)
+    }
+}
+#+END_SRC
+
+#+BEGIN_SRC rust
+fn main() {
+    let mut houston = GroundStation::new();
+
+    for sat_id in vec![1,2,3] {
+        houston.connect(sat_id);
+        let msg = Message { to: sat_id, content: String::from("hello") };
+        houston.send(msg);
+    }
+
+    for sat in &houston.satellites {
+        let msg = &sat.recv(&mut houston.mailbox);
+        println!("{:?}: {:?}", sat, msg);
+        println!("{:?}", &houston.mailbox);
+    }
+}
+#+END_SRC
