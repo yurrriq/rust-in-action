@@ -1,17 +1,17 @@
-{ pkgs ? import ./nix }:
+{ pkgs ? import ../nix }:
 let
-  src = pkgs.nix-gitignore.gitignoreSource [ "grep-lite/" ] ./.;
+  src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
 in
 pkgs.rustPlatform.buildRustPackage rec {
-  pname = "rust-in-action";
-  version = "0.3.21";
+  pname = "grep-lite";
+  version = "0.2.12";
 
   inherit src;
 
-  cargoSha256 = "1z4k4pz4i1daqgdxhgf0c69c4l2b1kn7p3vnhl3n2kimmdyra4w4";
+  cargoSha256 = "02a05d8xijccl48bc3h0p00zpx3w3i6g8qzrvy5pnish98snwjag";
 
   meta = with pkgs.stdenv.lib; {
-    description = "Reading through Rust in Action";
+    description = "grep-lite";
     homepage = "https://github.com/yurrriq/rust-in-action";
     license = licenses.unlicense;
     maintainers = [ maintainers.yurrriq ];

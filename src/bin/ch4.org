@@ -10,7 +10,7 @@ enum StatusMessage {
 
 ** Ownership
    :PROPERTIES:
-   :header-args: :noweb yes :tangle ch4-check-sat.rs
+   :header-args: :noweb yes :tangle ch4-check-sats.rs
    :END:
 
 #+BEGIN_SRC rust
@@ -32,7 +32,7 @@ fn check_status(sat: CubeSat) -> CubeSat {
 #+END_SRC
 
 When ~check_status~ is called, ownership is moved to the local variable
-~sat_id~. Then the new ~let~ binding is "reset".
+~sat~. Then the new ~let~ binding is "reset".
 #+BEGIN_SRC rust
 fn main() {
     let sat_a = CubeSat { id: 42 };

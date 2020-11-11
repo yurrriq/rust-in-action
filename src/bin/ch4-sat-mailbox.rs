@@ -11,9 +11,7 @@ pub struct Message {
 
 impl Mailbox {
     pub fn new() -> Mailbox {
-        Mailbox {
-            messages: vec![],
-        }
+        Mailbox { messages: vec![] }
     }
 
     pub fn post(&mut self, msg: Message) {
@@ -50,9 +48,7 @@ impl GroundStation {
     }
 
     pub fn connect(&mut self, sat_id: u64) -> CubeSat {
-        let sat = CubeSat {
-            id: sat_id,
-        };
+        let sat = CubeSat { id: sat_id };
         self.satellites.push(sat);
         sat
     }
@@ -66,7 +62,7 @@ impl GroundStation {
     }
 }
 
-#[derive(Debug,Clone,Copy)]
+#[derive(Copy, Clone, Debug)]
 pub struct CubeSat {
     id: u64,
 }
@@ -80,9 +76,12 @@ impl CubeSat {
 fn main() {
     let mut houston = GroundStation::new();
 
-    for sat_id in vec![1,2,3] {
+    for sat_id in vec![1, 2, 3] {
         houston.connect(sat_id);
-        let msg = Message { to: sat_id, content: String::from("hello") };
+        let msg = Message {
+            to: sat_id,
+            content: String::from("hello"),
+        };
         houston.send(msg);
     }
 

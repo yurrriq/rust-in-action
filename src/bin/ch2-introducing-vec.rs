@@ -9,14 +9,14 @@ It is the same with books.
 What do we seek
 through millions of pages?";
 
-    let mut tags: Vec<usize>                = Vec::new();
-    let mut ctx:  Vec<Vec<(usize, String)>> = Vec::new();
+    let mut tags: Vec<usize> = Vec::new();
+    let mut ctx: Vec<Vec<(usize, String)>> = Vec::new();
 
     for (i, line) in haystack.lines().enumerate() {
         if line.contains(needle) {
             tags.push(i);
 
-            let neighbors = Vec::with_capacity(2*context_lines + 1);
+            let neighbors = Vec::with_capacity(2 * context_lines + 1);
             ctx.push(neighbors);
         }
     }

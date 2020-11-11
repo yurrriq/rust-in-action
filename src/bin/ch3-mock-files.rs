@@ -6,13 +6,13 @@ extern crate rand;
 
 use rand::Rng;
 use std::fmt;
-use std::fmt::{Display};
+use std::fmt::Display;
 
 fn one_in(n: u32) -> bool {
-    rand::thread_rng().gen_bool(1.0/(n as f64))
+    rand::thread_rng().gen_bool(1.0 / (n as f64))
 }
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum FileState {
     Open,
     Closed,
@@ -21,7 +21,7 @@ pub enum FileState {
 impl Display for FileState {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            FileState::Open   => write!(f, "OPEN"),
+            FileState::Open => write!(f, "OPEN"),
             FileState::Closed => write!(f, "CLOSED"),
         }
     }
@@ -84,8 +84,8 @@ impl Read for File {
         if self.state != FileState::Open {
             return Err(String::from("File must be open for reading"));
         }
-        let mut tmp         = self.data.clone();
-        let     read_length = tmp.len();
+        let mut tmp = self.data.clone();
+        let read_length = tmp.len();
         save_to.reserve(read_length);
         save_to.append(&mut tmp);
         Ok(read_length)

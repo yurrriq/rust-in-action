@@ -1,10 +1,8 @@
-use std::ops::{Add};
-
+use std::ops::Add;
 
 fn add<T: Add<Output = T>>(i: T, j: T) -> T {
     return i + j;
 }
-
 
 fn main() {
     let (a, b) = (1.2, 3.4);

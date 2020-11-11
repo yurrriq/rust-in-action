@@ -5,7 +5,7 @@ fn main() {
         let item = *reference;
         let result = match item {
             42 | 132 => "hit!",
-            _        => "miss"
+            _ => "miss",
         };
 
         if result == "hit!" {

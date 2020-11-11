@@ -5,7 +5,7 @@ fn main() {
     for candidate in haystack.iter() {
         if candidate == &needle {
             println!("{}", candidate);
-            break
+            break;
         } else {
             print!(".");
         }
